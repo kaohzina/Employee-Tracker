@@ -1,0 +1,28 @@
+{
+  "name": "Employee-Tracker",
+  "version": "1.0.0",
+  "description": "AS A business owner\r I WANT to be able to view and manage the departments, roles, and employees in my company\r SO THAT I can organize and plan my business",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaohzina/Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaohzina/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/kaohzina/Employee-Tracker#readme",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.3.2"
+  }
+}
