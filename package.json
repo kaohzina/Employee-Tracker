@@ -1,5 +1,5 @@
 {
-  "name": "Employee-Tracker",
+  "name": "employee-tracker",
   "version": "1.0.0",
   "description": "AS A business owner\r I WANT to be able to view and manage the departments, roles, and employees in my company\r SO THAT I can organize and plan my business",
   "main": "index.js",
