@@ -1,6 +1,14 @@
 const mysql = require('mysql2');
-
 require('dotenv').config();
+
+greeting = () => {
+  console.log(' _____________________');
+  console.log('|                     |');
+  console.log('|                     |');
+  console.log('|  EMPLOYEE  TRACKER  |');
+  console.log('|                     |');
+  console.log('|_____________________|');
+}
 
 const db = mysql.createConnection(
   {

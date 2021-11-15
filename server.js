@@ -1,23 +1,123 @@
-const express = require('express');
-const db = require('./db/connection');
-const apiRoutes = require('./routes/apiRoutes');
+const { response } = require('express');
+const fs = require('fs');
+const inquirer = require("inquirer");
+const generateMarkdown =  require('./utils/generateMarkdown');
 
-const PORT = process.env.PORT || 3001;
-const app = express();
+function promptUser() {
+  return inquirer.prompt([
+  {
+    type: "list",
+    name: "menu",
+    message: "What would you like to do?",
+    choices: [
+    'View all departments',
+    'View all roles', 
+    'View all employees', 
+    'Add a department', 
+    'Add a role', 
+    'Add an employee', 
+    'Update an employee role'
+    ],
+  },
+])
+  .then((response => {
+    let choice = response.menu
+    switch (choice) {
+      case "View all departments":
+        viewDepts();
+        break;
+      case "View all roles":
+        viewRoles();
+        break;
+      case "View all employees":
+        viewEmployees();
+        break;
+      case "Add a department":
+        addDepts();
+        break;
+      case "Add a role":
+        addRoles();
+        break;
+      case "Add an employee":
+        addEmployees();
+        break;
+      case "Update an employee role":
+        updateEmployee();
+        break;
+    }
+  })
+)}   
+ 
+function viewDepts() {
+  const queue = 'SELECT * FROM departments';
+  db.promise().query(queue)
+  .then(([rows]) => {
+    let dept = rows;
+    console.table(dept)
+    menu();
+  })
+}
+function viewRoles() {
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+  db.promise().query(queue)
+  .then(([rows]) => {
+    let dept = rows;
+    console.table(dept)
+    menu();
+  })
+}
+function viewEmployees() {
 
-app.use('/api', apiRoutes);
+  db.promise().query(queue)
+  .then(([rows]) => {
+    let dept = rows;
+    console.table(dept)
+    menu();
+  })
+}
+function addDepts() {
 
-app.use((req, res) => {
-  res.status(404).end();
-});
+  db.promise().query(queue)
+  .then(([rows]) => {
+    let dept = rows;
+    console.table(dept)
+    menu();
+  })
+}
+function addRoles() {
 
-db.connect(err => {
-  if (err) throw err;
-  console.log('Database connected.');
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  db.promise().query(queue)
+  .then(([rows]) => {
+    let dept = rows;
+    console.table(dept)
+    menu();
+  })
+}
+function addEmployees() {
+
+  db.promise().query(queue)
+  .then(([rows]) => {
+    let dept = rows;
+    console.table(dept)
+    menu();
+  })
+}
+function updateEmployee() {
+
+  db.promise().query(queue)
+  .then(([rows]) => {
+    let dept = rows;
+    console.table(dept)
+    menu();
+  })
+}
+
+
+async function menu(){
+  const data = await promptUser();
+  const generateReadMe = generateMarkdown(data)
+  fs.writeFile('./dist/README.md', generateReadMe, err => {
+    if (err) { reject(err); return;}
   });
-});
+};
+menu();
