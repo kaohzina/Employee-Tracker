@@ -58,7 +58,7 @@ function viewDepts() {
   })
 }
 function viewRoles() {
-
+  const queue = 'SELECT roles.id, roles.title, departments.name AS department FROM role INNER JOIN department ON roles.department_id = department.id';
   db.promise().query(queue)
   .then(([rows]) => {
     let dept = rows;
@@ -67,7 +67,7 @@ function viewRoles() {
   })
 }
 function viewEmployees() {
-
+  const queue = 'SELECT employees.id, employees.first_name, employees.last_name, role_id, department.name AS department'
   db.promise().query(queue)
   .then(([rows]) => {
     let dept = rows;
