@@ -1,6 +1,7 @@
 const { response } = require('express');
 const fs = require('fs');
 const inquirer = require("inquirer");
+const Connection = require('mysql2/typings/mysql/lib/Connection');
 const generateMarkdown =  require('./utils/generateMarkdown');
 
 function promptUser() {
@@ -67,7 +68,7 @@ function viewRoles() {
   })
 }
 function viewEmployees() {
-  const queue = 'SELECT employees.id, employees.first_name, employees.last_name, role_id, department.name AS department'
+  const queue = 'SELECT employees.id, employees.first_name, employees.last_name, role_id, department.name AS department, role.salary, CONCAT (manager.first_name, manager.last_name) AS manager FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee manager ON employee.manager_id = manager.id';
   db.promise().query(queue)
   .then(([rows]) => {
     let dept = rows;
@@ -76,8 +77,26 @@ function viewEmployees() {
   })
 }
 function addDepts() {
-
-  db.promise().query(queue)
+  inquirer.prompt([
+  {
+    type: 'input',
+    name: 'addedDeptName',
+    message: "What is the name of the department you would like to add?",
+  validate: addedDeptName => {
+    if (addedDeptName) {
+      return true;
+    } else {
+      console.log('Enter a name for the department');
+      return false;
+    }
+  }
+  }
+  ]).then(answer => {
+    const sql = `INSERT INTO department (name) VALUES (?)`;
+  db.query(queue, answer.addedDeptName, (err, result) => {
+    if (err) throw err;
+    console.log(answer.addedDeptName + ' has been added to the list of departments.');
+  })
   .then(([rows]) => {
     let dept = rows;
     console.table(dept)
