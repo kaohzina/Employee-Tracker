@@ -110,6 +110,34 @@ function addDepts() {
     });
 }
 function addRoles() {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'role',
+      message: 'What is the role you would like to add?',
+      validate: addRole => {
+        if (addRole) {
+          return true;
+        } else {
+          console.log('Enter the name of the role you would like to add.');
+          return false;
+        }
+      }
+    },
+    {
+    type: 'input', 
+      name: 'salary',
+      message: "What is the salary of this role?",
+      validate: addSalary => {
+        if (isNAN(addSalary)) {
+            return true;
+        } else {
+            console.log('Please enter a salary');
+            return false;
+        }
+      }
+    }
+  ])
   db.promise()
     .query(queue)
     .then(([rows]) => {
