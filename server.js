@@ -1,12 +1,12 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
-const db = require('./db/connection');
+
 function promptUser() {
   return inquirer
     .prompt([
       {
         type: "list",
-        name: "menu",
+        name: "promptUser",
         message: "What would you like to do?",
         choices: [
           "View all departments",
@@ -20,7 +20,7 @@ function promptUser() {
       },
     ])
     .then((response) => {
-      let choice = response.menu;
+      let choice = response.promptUser;
       switch (choice) {
         case "View all departments":
           viewDepts();
@@ -65,7 +65,7 @@ function viewRoles() {
     .then(([rows]) => {
       let dept = rows;
       console.table(dept);
-      menu();
+      promptUser();
     });
 }
 function viewEmployees() {
@@ -76,7 +76,7 @@ function viewEmployees() {
     .then(([rows]) => {
       let dept = rows;
       console.table(dept);
-      menu();
+      promptUser();
     });
 }
 function addDepts() {
@@ -126,7 +126,7 @@ function addRoles() {
     .then(([rows]) => {
       let dept = rows;
       console.table(dept);
-      menu();
+      promptUser();
     });
 }
 function addEmployees() {
@@ -163,7 +163,7 @@ function addEmployees() {
     .then(([rows]) => {
       let dept = rows;
       console.table(dept);
-      menu();
+      promptUser();
     });
 }
 function updateEmployee() {
@@ -187,7 +187,8 @@ function updateEmployee() {
     .then(([rows]) => {
       let dept = rows;
       console.table(dept);
-      menu();
+      promptUser();
     });
   }
 
+promptUser();
