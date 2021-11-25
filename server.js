@@ -1,9 +1,6 @@
-const { response } = require("express");
 const fs = require("fs");
 const inquirer = require("inquirer");
-const Connection = require("mysql2/typings/mysql/lib/Connection");
-const generateMarkdown = require("./utils/generateMarkdown");
-
+const db = require('./db/connection');
 function promptUser() {
   return inquirer
     .prompt([
@@ -57,7 +54,7 @@ function viewDepts() {
     .then(([rows]) => {
       let dept = rows;
       console.table(dept);
-      menu();
+      promptUser();
     });
 }
 function viewRoles() {
@@ -120,20 +117,6 @@ function addRoles() {
           return true;
         } else {
           console.log('Enter the name of the role you would like to add.');
-          return false;
-        }
-      }
-    },
-    {
-    type: 'input', 
-      name: 'salary',
-      message: "What is the salary of this role?",
-      validate: addSalary => {
-        if (isNAN(addSalary)) {
-            return true;
-        } else {
-            console.log('Please enter a salary');
-            return false;
         }
       }
     }
@@ -147,6 +130,34 @@ function addRoles() {
     });
 }
 function addEmployees() {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'fistName',
+      message: "What is the employee's first name?",
+      validate: addFirstName => {
+        if (addFirstName) {
+            return true;
+        } else {
+            console.log('Please enter a first name');
+            return false;
+        }
+      }
+    },
+    {
+      type: 'input',
+      name: 'lastName',
+      message: "What is the employee's last name?",
+      validate: addLastName => {
+        if (addLastName) {
+            return true;
+        } else {
+            console.log('Please enter a last name');
+            return false;
+        }
+      }
+    }
+  ])
   db.promise()
     .query(queue)
     .then(([rows]) => {
@@ -156,6 +167,21 @@ function addEmployees() {
     });
 }
 function updateEmployee() {
+        inquirer
+          .prompt([
+            {
+              name: 'chosenEmployee',
+              type: 'list',
+              message: 'Which employee has a new role?',
+              choices: employeeNamesArray
+            },
+            {
+              name: 'chosenRole',
+              type: 'list',
+              message: 'What is their new role?',
+              choices: rolesArray
+            }
+          ])
   db.promise()
     .query(queue)
     .then(([rows]) => {
@@ -163,16 +189,5 @@ function updateEmployee() {
       console.table(dept);
       menu();
     });
-}
+  }
 
-async function menu() {
-  const data = await promptUser();
-  const generateReadMe = generateMarkdown(data);
-  fs.writeFile("./dist/README.md", generateReadMe, (err) => {
-    if (err) {
-      reject(err);
-      return;
-    }
-  });
-}
-menu();
