@@ -1,4 +1,5 @@
 # Employee-Tracker
+https://www.youtube.com/watch?v=vb7tyGj7nhU
 AS A business owner
 I WANT to be able to view and manage the departments, roles, and employees in my company
 SO THAT I can organize and plan my business
